@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Reef Sentinel brag</title>
+<!--
+  /brag-slim composition: 1080x1920, 30 fps, 34 beats at 90 BPM (22.667 s, 680 frames).
+  Every animation is a paused CSS animation; window.seek(t) puts them all at time t,
+  so each frame is a pure function of time.
+  Timing is written in BEATS: a scene sets --s (start beat), a child sets --d (beats after
+  that). --dur stays in seconds. Open in a browser to preview; add ?t=7.5 to freeze.
+  Read zone: y 250-1536, x 100-940 (clear of the Reels/Shorts/TikTok overlays).
+-->
+<style>
+@font-face{font-family:"Outfit";src:url("assets/outfit-latin-wght-normal.woff2") format("woff2");font-weight:100 900;font-display:block}
+@property --d{syntax:"<number>";inherits:false;initial-value:0}
+@property --dur{syntax:"<number>";inherits:false;initial-value:.6}
+@property --ease{syntax:"*";inherits:false}
+:root{
+  --lav:#d7d0f4;--ink:#101110;--purple:#ab87ed;--indigo:#3d3776;--body:#3f3657;
+  --card:#f6f4fb;--lav2:#e8e2f6;--line:#cfc6e6;--line2:#dfd9ee;
+  --beat:.6666667s;
+  --out:cubic-bezier(.16,1,.3,1);--spring:cubic-bezier(.34,1.56,.64,1);--inout:cubic-bezier(.65,0,.35,1)
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#1b1a1f;overflow:hidden}
+#stage{position:absolute;left:0;top:0;width:1080px;height:1920px;overflow:hidden;background:var(--ink);
+  font-family:"Outfit",sans-serif;color:var(--ink);transform-origin:0 0;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+.scene{position:absolute;inset:0;overflow:hidden;visibility:hidden}
+.scene>*{position:absolute}
+.bg{inset:0}
+.lavbg{background:var(--lav)}.whitebg{background:#fff}.inkbg{background:var(--ink)}
+.edge{position:absolute;left:0;top:-119px;width:1080px;height:120px;display:block}
+
+/* ---------- animation plumbing ---------- */
+.a{animation-duration:calc(var(--dur)*1s);animation-delay:calc((var(--s) + var(--d))*var(--beat));animation-fill-mode:both;
+  animation-timing-function:var(--ease,var(--out));animation-play-state:paused}
+.up{animation-name:up}.fade{animation-name:fade}.fadeOut{animation-name:fadeOut}.outUp{animation-name:outUp}
+.pop{animation-name:pop;--ease:var(--spring)}.wipeUp{animation-name:wipeUp}.revealR{animation-name:revealR}
+.growX{animation-name:growX;transform-origin:0 50%}.snap{animation-name:snap}.rise{animation-name:rise}
+@keyframes up{from{opacity:0;transform:translateY(64px)}to{opacity:1;transform:none}}
+@keyframes rise{from{transform:translateY(135%)}to{transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes fadeOut{from{opacity:1}to{opacity:0}}
+@keyframes outUp{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-64px)}}
+@keyframes pop{from{opacity:0;transform:scale(.45)}35%{opacity:1}to{opacity:1;transform:scale(1)}}
+@keyframes wipeUp{from{transform:translateY(2060px)}to{transform:none}}
+@keyframes revealR{from{clip-path:inset(-10% 100% -10% 0)}to{clip-path:inset(-10% 0 -10% 0)}}
+@keyframes growX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes snap{from{transform:translate(var(--x0),var(--y0)) rotate(var(--r0))}to{transform:translate(var(--x1),var(--y1)) rotate(0deg)}}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(-360px)}}
+
+/* ---------- shared pieces (column: x 100-940) ---------- */
+.toplogo{left:100px;top:250px;width:280px;height:auto}
+.eyebrow{left:100px;display:flex;align-items:center;gap:20px;font-weight:700;font-size:28px;letter-spacing:.2em;color:var(--indigo);white-space:nowrap}
+.eyebrow i{width:58px;height:5px;border-radius:3px;background:var(--purple);display:block}
+.eyebrow.light{color:var(--lav)}
+.h1{left:100px;right:140px;margin:0;font-weight:700;letter-spacing:-.02em;line-height:1.03}
+.white{color:#fff}
+.line{display:block;overflow:hidden;padding-bottom:.14em;margin-bottom:-.14em}
+.line>span{display:block}
+.cap{left:100px;right:140px;margin:0;font-size:39px;line-height:1.28;color:var(--body);font-weight:400}
+.tile{flex:none;display:grid;place-items:center;background:var(--lav);color:var(--ink);border-radius:24px}
+.tile svg{display:block}
+svg.lu{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pill{display:inline-flex;align-items:center;gap:16px;border-radius:999px;font-weight:600;white-space:nowrap}
+.dot{flex:none;width:24px;height:24px;border-radius:50%;background:var(--purple);animation:pulse .6666667s ease-in-out infinite alternate paused}
+@keyframes pulse{from{box-shadow:0 0 0 5px rgba(171,135,237,.34)}to{box-shadow:0 0 0 11px rgba(171,135,237,.16)}}
+.card{left:100px;right:140px;background:#fff;border:3px solid var(--line2);border-radius:40px;box-shadow:0 28px 64px rgba(61,55,118,.13)}
+.waves{left:0;width:1080px;overflow:hidden}
+.waves svg{display:block;width:1800px}
+.waves path{fill:none;stroke:var(--purple);stroke-width:5}
+.w1{animation:drift 7s linear infinite paused}
+.w2{animation:drift 11s linear infinite paused;opacity:.5}
+.w3{animation:drift 16s linear infinite paused;opacity:.28}
+
+/* ---------- 1 hook ---------- */
+#s1{background:var(--ink)}
+.chipPos{left:0;top:0}
+.chip{width:600px;height:124px;border-radius:62px;background:#fff;display:flex;align-items:center;gap:26px;padding:0 20px;
+  font-size:50px;font-weight:600;letter-spacing:-.01em;box-shadow:0 22px 54px rgba(0,0,0,.45)}
+.chip .tile{width:88px;height:88px;border-radius:50%}
+.chip .ok{margin-left:auto;width:64px;height:64px;border-radius:50%;background:var(--purple);display:grid;place-items:center;color:var(--ink)}
+.frame{left:164px;top:754px;width:712px;height:532px;border-radius:88px;border:3px solid rgba(215,208,244,.3);background:rgba(215,208,244,.06)}
+
+/* ---------- 2 reveal ---------- */
+.biglogo{left:100px;top:478px;width:600px;height:auto}
+.livepill{left:100px;background:var(--ink);color:#fff;font-size:38px;padding:23px 40px 23px 28px}
+
+/* ---------- 3 room chart ---------- */
+.chart{padding:28px}
+.chead{display:flex;align-items:center;justify-content:space-between;height:56px;font-size:37px;font-weight:700}
+.chead small{font-size:27px;font-weight:600;color:var(--indigo);background:var(--lav2);border-radius:999px;padding:8px 20px}
+.days{display:grid;grid-template-columns:82px repeat(5,139px);margin-top:16px;height:40px;font-size:25px;font-weight:700;letter-spacing:.14em;color:var(--indigo);align-items:center;text-align:center}
+.row{position:relative;display:grid;grid-template-columns:82px repeat(5,139px);height:66px;margin-top:10px;align-items:center}
+.row>b{font-size:31px;font-weight:700}
+.cell{height:66px;margin:0 5px;border-radius:15px;background:var(--card)}
+.blk{position:absolute;top:0;height:66px;border-radius:16px;display:flex;align-items:center;padding:0 20px;font-size:26px;font-weight:600;white-space:nowrap;overflow:hidden}
+.blk.b-agent{background:var(--ink);color:#fff}
+.blk.b-site{background:var(--purple);color:var(--ink)}
+.blk.b-walk{background:var(--lav);color:var(--indigo)}
+.blk.new{animation-name:blkIn}
+@keyframes blkIn{from{width:0;padding:0;opacity:0;box-shadow:0 0 0 0 rgba(171,135,237,.9)}6%{opacity:1}50%{width:268px;padding:0 20px;box-shadow:0 0 0 14px rgba(171,135,237,.45)}to{width:268px;padding:0 20px;opacity:1;box-shadow:0 0 0 26px rgba(171,135,237,0)}}
+.toast{left:100px;background:var(--ink);color:#fff;font-size:32px;padding:20px 34px 20px 26px;animation-name:toast;box-shadow:0 16px 36px rgba(16,17,16,.25)}
+.toast b{font-weight:700}
+@keyframes toast{from{opacity:0;transform:translateY(-42px) scale(.9)}9%{opacity:1;transform:translateY(5px) scale(1.02)}15%{opacity:1;transform:none}to{opacity:1;transform:none}}
+.sites{left:100px;right:140px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.site{position:relative;background:var(--card);border-radius:32px;padding:24px 22px 22px;height:190px;animation-name:siteFlash}
+@keyframes siteFlash{from{background:var(--card)}35%{background:var(--lav)}to{background:var(--card)}}
+.site .top{display:flex;align-items:center;gap:14px;font-size:30px;font-weight:700}
+.site .tile{width:54px;height:54px;border-radius:16px}
+.site .sync{margin-left:auto;color:var(--purple);animation-name:sync}
+@keyframes sync{from{transform:rotate(0)}to{transform:rotate(-360deg)}}
+.site .when{margin-top:18px;font-size:22px;font-weight:700;letter-spacing:.14em;color:var(--indigo)}
+.roll{height:46px;overflow:hidden;margin-top:2px}
+.roll>div{animation-name:roll}
+.roll span{display:block;height:46px;line-height:46px;font-size:34px;font-weight:700;white-space:nowrap}
+.roll span.so{color:#7a4fd0}
+@keyframes roll{from{transform:translateY(0)}to{transform:translateY(-46px)}}
+
+/* ---------- 4 front desk ---------- */
+.guest{padding:32px;display:flex;align-items:center;gap:26px}
+.guest .tile{width:96px;height:96px;border-radius:28px}
+.guest h3{margin:0;font-size:44px;font-weight:700;letter-spacing:-.01em}
+.guest p{margin:4px 0 0;font-size:30px;color:var(--body)}
+.btn{position:relative;margin-left:auto;height:86px;width:272px;border-radius:43px;font-size:33px;font-weight:700;overflow:hidden;animation-name:btn}
+.btn span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px}
+@keyframes btn{from{background:var(--ink);transform:scale(1)}35%{background:var(--ink);transform:scale(.9)}to{background:var(--purple);transform:scale(1)}}
+.btn .b1{color:#fff}.btn .b2{color:var(--ink)}
+.tap{width:120px;height:120px;border-radius:50%;border:5px solid var(--purple);animation-name:tap}
+@keyframes tap{from{opacity:0;transform:scale(.3)}25%{opacity:1}to{opacity:0;transform:scale(1.7)}}
+.bill{padding:32px 34px 36px}
+.bill .bh{display:flex;align-items:center;gap:20px;font-size:40px;font-weight:700}
+.bill .bh .tile{width:72px;height:72px;border-radius:22px}
+.ready{margin-left:auto;background:var(--ink);color:#fff;font-size:29px;padding:12px 24px 12px 16px;gap:10px}
+.ready svg{color:var(--purple)}
+.bl{display:flex;align-items:center;justify-content:space-between;margin-top:26px;font-size:33px;color:var(--body)}
+.bl i{display:block;height:16px;border-radius:8px;background:var(--lav2);transform-origin:100% 50%}
+.bl.tot{margin-top:28px;padding-top:26px;border-top:3px solid var(--line2);font-weight:700;color:var(--ink);font-size:37px}
+.bl.tot i{background:var(--ink);height:18px}
+
+/* ---------- 5 support ---------- */
+.chat{padding:0;overflow:hidden}
+.chatH{display:flex;align-items:center;gap:22px;padding:26px 30px;border-bottom:3px solid var(--line2);background:var(--card)}
+.chatH .av{width:86px;height:86px;border-radius:50%;background:var(--ink);position:relative;flex:none}
+.chatH .av img{position:absolute;left:22px;top:18px;height:50px;width:auto}
+.chatH h3{margin:0;font-size:37px;font-weight:700}
+.chatH p{margin:2px 0 0;font-size:27px;color:var(--body)}
+.msgs{padding:28px 30px 32px;display:flex;flex-direction:column;gap:18px}
+.msg{max-width:660px;font-size:36px;line-height:1.25;padding:22px 30px;border-radius:34px}
+.msg small{display:block;font-size:23px;font-weight:700;letter-spacing:.1em;margin-bottom:6px;opacity:.75}
+.msg.me{align-self:flex-end;background:var(--lav);border-bottom-right-radius:10px;transform-origin:100% 100%}
+.msg.team{align-self:flex-start;background:var(--ink);color:#fff;border-bottom-left-radius:10px;transform-origin:0 100%}
+.msg.team small{color:var(--purple);opacity:1}
+.msg .ck{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--purple);color:var(--ink);vertical-align:-7px;margin-left:8px}
+.local{left:100px;right:140px;background:var(--lav);border-radius:40px;padding:34px 36px;display:flex;align-items:center;gap:30px}
+.local .circ{flex:none;width:120px;height:120px;border-radius:50%;background:var(--ink);color:var(--purple);display:grid;place-items:center}
+.local h3{margin:0;font-size:45px;font-weight:700;letter-spacing:-.01em;line-height:1.12}
+
+/* ---------- 6 price lock ---------- */
+.lockc{left:410px;top:520px;width:220px;height:220px;border-radius:50%;background:var(--ink);color:var(--purple);display:grid;place-items:center}
+.lockc .sh{animation-name:shackle;--ease:var(--spring)}
+@keyframes shackle{from{transform:translateY(-4.2px)}to{transform:none}}
+.lockGrow{left:410px;top:520px;width:220px;height:220px;border-radius:50%;background:var(--ink);opacity:0;animation-name:lockGrow;animation-fill-mode:forwards}
+@keyframes lockGrow{from{opacity:1;transform:scale(1)}to{opacity:1;transform:scale(13.5)}}
+.lockT{left:100px;right:140px;text-align:center;margin:0;font-weight:700;font-size:116px;line-height:1.02;letter-spacing:-.02em}
+.lockS{left:100px;right:140px;text-align:center;margin:0;font-size:45px;color:var(--indigo)}
+.lockS b{font-weight:700;color:var(--ink)}
+
+/* ---------- 7 call to action ---------- */
+#s7{background:var(--ink);color:#fff}
+.tag{left:100px;right:140px;margin:0;font-size:94px;font-weight:700;line-height:1.04;letter-spacing:-.02em}
+.tag .l2{color:var(--lav)}
+.rule{left:100px;right:140px;height:3px;background:#2b2833}
+.phone{left:100px;right:140px;margin:0;font-size:106px;font-weight:700;letter-spacing:-.01em;line-height:1;white-space:nowrap}
+.contact{left:100px;right:140px;margin:0;font-size:38px;line-height:1.5;color:var(--line)}
+.contact b{color:#fff;font-weight:600}
+.keep{left:100px;border:3px solid #4a4658;color:var(--lav);font-size:30px;padding:19px 32px 19px 24px}
+.keep svg{color:var(--purple)}
+.legal{left:100px;right:140px;margin:0;font-size:25px;line-height:1.4;color:#8f8b9c}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ===== 1 · beats 0-4 · hook ===== -->
+<section class="scene" id="s1" style="--s:0" data-s="0" data-e="5.02">
+  <img class="toplogo" src="assets/logo-white.png" alt="">
+  <div class="eyebrow light" style="top:372px"><i></i>FOR HOTELS · RESORTS · HOMESTAYS</div>
+  <div class="a outUp" style="left:0;right:0;top:0;--d:1.85;--dur:.25;--ease:var(--inout)">
+    <h1 class="h1 white" style="position:absolute;top:436px;font-size:124px">Bookings from<br>everywhere?</h1>
+  </div>
+  <h1 class="h1 white" style="top:436px;font-size:124px">
+    <span class="line"><span class="a rise" style="--d:2.25;--dur:.5">All in</span></span>
+    <span class="line"><span class="a rise" style="--d:2.4;--dur:.5;color:var(--lav)">one place.</span></span>
+  </h1>
+  <div class="frame a fade" style="--d:2.1;--dur:.45"></div>
+
+  <div class="chipPos a snap" style="--x0:100px;--y0:800px;--r0:-6deg;--x1:220px;--y1:806px;--d:1.9;--dur:.55;--ease:var(--inout)">
+    <div class="chip a pop" style="--d:.38;--dur:.45"><span class="tile" data-ic="globe" data-sz="48"></span>Booking sites
+      <span class="ok a pop" style="--d:2.75;--dur:.35" data-ic="check" data-sz="36" data-sw="3"></span></div>
+  </div>
+  <div class="chipPos a snap" style="--x0:332px;--y0:968px;--r0:5deg;--x1:220px;--y1:958px;--d:1.95;--dur:.55;--ease:var(--inout)">
+    <div class="chip a pop" style="--d:.88;--dur:.45"><span class="tile" data-ic="users" data-sz="48"></span>Travel agents
+      <span class="ok a pop" style="--d:3.0;--dur:.35" data-ic="check" data-sz="36" data-sw="3"></span></div>
+  </div>
+  <div class="chipPos a snap" style="--x0:118px;--y0:1136px;--r0:-4deg;--x1:220px;--y1:1110px;--d:2.0;--dur:.55;--ease:var(--inout)">
+    <div class="chip a pop" style="--d:1.38;--dur:.45"><span class="tile" data-ic="door" data-sz="48"></span>Walk-ins
+      <span class="ok a pop" style="--d:3.25;--dur:.35" data-ic="check" data-sz="36" data-sw="3"></span></div>
+  </div>
+</section>
+
+<!-- ===== 2 · beats 4-8 · reveal ===== -->
+<section class="scene" id="s2" style="--s:4" data-s="4" data-e="9.02">
+  <div class="bg lavbg a wipeUp" style="--dur:.65;--ease:var(--inout)"><svg class="edge" viewBox="0 0 1080 120"><path fill="#d7d0f4" d="M0 60C90 14 180 14 270 60S450 106 540 60S720 14 810 60S990 106 1080 60V121H0Z"/></svg></div>
+  <img class="biglogo a revealR" style="--d:.6;--dur:.55" src="assets/logo-dark.png" alt="Reef Sentinel">
+  <h1 class="h1" style="top:668px;font-size:118px">
+    <span class="line"><span class="a rise" style="--d:.9;--dur:.6">World-class</span></span>
+    <span class="line"><span class="a rise" style="--d:1.05;--dur:.6">hotel software.</span></span>
+  </h1>
+  <div class="pill livepill a pop" style="top:968px;--d:1.4;--dur:.45"><span class="dot"></span>Live in 30+ properties in Andaman</div>
+  <div class="waves a fade" style="top:1140px;height:330px;--d:.7;--dur:.9" data-waves></div>
+</section>
+
+<!-- ===== 3 · beats 8-14 · stop double bookings ===== -->
+<section class="scene" id="s3" style="--s:8" data-s="8" data-e="15.02">
+  <div class="bg whitebg a wipeUp" style="--dur:.65;--ease:var(--inout)"><svg class="edge" viewBox="0 0 1080 120"><path fill="#fff" d="M0 60C90 14 180 14 270 60S450 106 540 60S720 14 810 60S990 106 1080 60V121H0Z"/></svg></div>
+  <img class="toplogo a fade" style="--d:.6;--dur:.4" src="assets/logo-dark.png" alt="">
+  <div class="eyebrow a up" style="top:362px;--d:.5"><i></i>BOOKING SITES (OTAs)</div>
+  <h1 class="h1 a up" style="top:410px;font-size:88px;--d:.6">Stop double bookings</h1>
+
+  <div class="pill toast a" style="top:538px;--d:2.38;--dur:3;--ease:linear"><span class="dot"></span><span><b>New booking</b> · Room 102 · from a booking site</span></div>
+
+  <div class="card chart a up" style="top:638px;--d:.8">
+    <div class="chead">Room chart <small>This week</small></div>
+    <div class="days"><span></span><span>FRI</span><span>SAT</span><span>SUN</span><span>MON</span><span>TUE</span></div>
+    <div class="row"><b>101</b><i class="cell"></i><i class="cell"></i><i class="cell"></i><i class="cell"></i><i class="cell"></i>
+      <span class="blk b-agent a revealR" style="left:87px;width:268px;--d:1.1;--dur:.5">Travel agent</span></div>
+    <div class="row"><b>102</b><i class="cell"></i><i class="cell"></i><i class="cell"></i><i class="cell"></i><i class="cell"></i>
+      <span class="blk b-site new a" style="left:226px;width:268px;--d:3.0;--dur:.8">Booking site</span></div>
+    <div class="row"><b>103</b><i class="cell"></i><i class="cell"></i><i class="cell"></i><i class="cell"></i><i class="cell"></i>
+      <span class="blk b-walk a revealR" style="left:226px;width:407px;--d:1.25;--dur:.5">Walk-in</span></div>
+    <div class="row"><b>104</b><i class="cell"></i><i class="cell"></i><i class="cell"></i><i class="cell"></i><i class="cell"></i>
+      <span class="blk b-agent a revealR" style="left:226px;width:268px;--d:1.4;--dur:.5">Travel agent</span>
+      <span class="blk b-site a revealR" style="left:504px;width:268px;--d:1.55;--dur:.5">Booking site</span></div>
+  </div>
+
+  <div class="sites a up" style="top:1140px;--d:1.2">
+    <div class="site a" style="--d:3.5;--dur:.7;--ease:ease-out"><div class="top"><span class="tile" data-ic="globe" data-sz="30"></span>Site 1<span class="sync a" style="--d:3.5;--dur:.7" data-ic="refresh" data-sz="32" data-sw="2.4"></span></div>
+      <div class="when">SATURDAY</div><div class="roll"><div class="a" style="--d:3.5;--dur:.5"><span>1 room left</span><span class="so">Sold out</span></div></div></div>
+    <div class="site a" style="--d:3.75;--dur:.7;--ease:ease-out"><div class="top"><span class="tile" data-ic="globe" data-sz="30"></span>Site 2<span class="sync a" style="--d:3.75;--dur:.7" data-ic="refresh" data-sz="32" data-sw="2.4"></span></div>
+      <div class="when">SATURDAY</div><div class="roll"><div class="a" style="--d:3.75;--dur:.5"><span>1 room left</span><span class="so">Sold out</span></div></div></div>
+    <div class="site a" style="--d:4.0;--dur:.7;--ease:ease-out"><div class="top"><span class="tile" data-ic="globe" data-sz="30"></span>Site 3<span class="sync a" style="--d:4.0;--dur:.7" data-ic="refresh" data-sz="32" data-sw="2.4"></span></div>
+      <div class="when">SATURDAY</div><div class="roll"><div class="a" style="--d:4.0;--dur:.5"><span>1 room left</span><span class="so">Sold out</span></div></div></div>
+  </div>
+  <p class="cap a up" style="top:1372px;--d:1.5">One room stock across<br>70+ booking sites (OTAs).</p>
+</section>
+
+<!-- ===== 4 · beats 14-18 · front desk ===== -->
+<section class="scene" id="s4" style="--s:14" data-s="14" data-e="19.02">
+  <div class="bg lavbg a wipeUp" style="--dur:.65;--ease:var(--inout)"><svg class="edge" viewBox="0 0 1080 120"><path fill="#d7d0f4" d="M0 60C90 14 180 14 270 60S450 106 540 60S720 14 810 60S990 106 1080 60V121H0Z"/></svg></div>
+  <img class="toplogo a fade" style="--d:.6;--dur:.4" src="assets/logo-dark.png" alt="">
+  <div class="eyebrow a up" style="top:362px;--d:.5"><i></i>FRONT DESK</div>
+  <h1 class="h1 a up" style="top:410px;font-size:94px;--d:.6">A faster front desk</h1>
+
+  <div class="card guest a up" style="top:580px;--d:.75">
+    <span class="tile" data-ic="key" data-sz="52"></span>
+    <div><h3>Room 204</h3><p>2 guests · 2 nights</p></div>
+    <div class="btn a" style="--d:1.5;--dur:.4;--ease:ease-out">
+      <span class="b1 a fadeOut" style="--d:1.7;--dur:.12">Check in</span>
+      <span class="b2 a fade" style="--d:1.75;--dur:.18"><svg class="lu" width="34" height="34" viewBox="0 0 24 24" style="stroke-width:3"><path d="M20 6 9 17l-5-5"/></svg>Checked in</span>
+    </div>
+  </div>
+  <div class="tap a" style="left:709px;top:603px;--d:1.42;--dur:.55;--ease:ease-out"></div>
+
+  <div class="card bill a up" style="top:800px;--d:2.0">
+    <div class="bh"><span class="tile" data-ic="file" data-sz="40"></span>GST bill
+      <span class="pill ready a pop" style="--d:3.0;--dur:.4"><svg class="lu" width="32" height="32" viewBox="0 0 24 24" style="stroke-width:3"><path d="M20 6 9 17l-5-5"/></svg>Ready</span></div>
+    <div class="bl"><span>Room charges</span><i class="a growX" style="width:190px;--d:2.3;--dur:.35"></i></div>
+    <div class="bl"><span>Food and extras</span><i class="a growX" style="width:130px;--d:2.42;--dur:.35"></i></div>
+    <div class="bl"><span>GST</span><i class="a growX" style="width:96px;--d:2.54;--dur:.35"></i></div>
+    <div class="bl tot"><span>Total</span><i class="a growX" style="width:220px;--d:2.66;--dur:.35"></i></div>
+  </div>
+</section>
+
+<!-- ===== 5 · beats 18-24 · support ===== -->
+<section class="scene" id="s5" style="--s:18" data-s="18" data-e="25.02">
+  <div class="bg whitebg a wipeUp" style="--dur:.65;--ease:var(--inout)"><svg class="edge" viewBox="0 0 1080 120"><path fill="#fff" d="M0 60C90 14 180 14 270 60S450 106 540 60S720 14 810 60S990 106 1080 60V121H0Z"/></svg></div>
+  <img class="toplogo a fade" style="--d:.6;--dur:.4" src="assets/logo-dark.png" alt="">
+  <div class="eyebrow a up" style="top:362px;--d:.5"><i></i>LOCAL SUPPORT</div>
+  <h1 class="h1 a up" style="top:410px;font-size:90px;--d:.6">Support just<br>around the corner.</h1>
+
+  <div class="card chat a up" style="top:652px;--d:.8">
+    <div class="chatH"><div class="av"><img src="assets/icon-white.png" alt=""></div><div><h3>Your hotel + Reef Sentinel</h3><p>Your own WhatsApp group with our team</p></div></div>
+    <div class="msgs">
+      <div class="msg me a pop" style="--d:1.45;--dur:.4"><small>YOU</small>Can you add our sea-view rooms?</div>
+      <div class="msg team a pop" style="--d:2.45;--dur:.4"><small>REEF SENTINEL TEAM</small>Done. They're on your room chart <span class="ck"><svg class="lu" width="26" height="26" viewBox="0 0 24 24" style="stroke-width:3.2"><path d="M20 6 9 17l-5-5"/></svg></span></div>
+    </div>
+  </div>
+
+  <div class="local a up" style="top:1196px;--d:3.2">
+    <div class="circ" data-ic="pin" data-sz="62"></div>
+    <h3>On-site setup and training<br>in the islands</h3>
+  </div>
+</section>
+
+<!-- ===== 6 · beats 24-28 · price lock ===== -->
+<section class="scene" id="s6" style="--s:24" data-s="24" data-e="28.02">
+  <div class="bg lavbg a wipeUp" style="--dur:.65;--ease:var(--inout)"><svg class="edge" viewBox="0 0 1080 120"><path fill="#d7d0f4" d="M0 60C90 14 180 14 270 60S450 106 540 60S720 14 810 60S990 106 1080 60V121H0Z"/></svg></div>
+  <img class="toplogo a fade" style="--d:.6;--dur:.4" src="assets/logo-dark.png" alt="">
+  <div class="lockc a pop" style="--d:.5;--dur:.5">
+    <svg class="lu" width="108" height="108" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path class="sh a" style="--d:1.5;--dur:.35" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+  </div>
+  <h1 class="lockT" style="top:800px">
+    <span class="line"><span class="a rise" style="--d:.75;--dur:.55">Price locked</span></span>
+    <span class="line"><span class="a rise" style="--d:.9;--dur:.55">for 3 years</span></span>
+  </h1>
+  <p class="lockS a up" style="top:1076px;--d:1.25">when you join by <b>31 March 2027</b></p>
+  <div class="lockGrow a" style="--d:3.3;--dur:.45;--ease:cubic-bezier(.7,0,.84,0)"></div>
+</section>
+
+<!-- ===== 7 · beats 28-34 · call to action ===== -->
+<section class="scene" id="s7" style="--s:28" data-s="28" data-e="99">
+  <img class="toplogo a fade" style="--d:.1;--dur:.4" src="assets/logo-white.png" alt="">
+  <h1 class="tag" style="top:372px">
+    <span class="line"><span class="a rise" style="--d:.15;--dur:.55">See it now.</span></span>
+    <span class="line l2"><span class="a rise" style="--d:.33;--dur:.55">Switch when</span></span>
+    <span class="line l2"><span class="a rise" style="--d:.5;--dur:.55">you're ready.</span></span>
+  </h1>
+  <div class="rule a growX" style="top:716px;--d:.9;--dur:.6"></div>
+  <div class="eyebrow a up" style="top:764px;color:var(--purple);--d:1.0">TALK TO US</div>
+  <p class="phone a up" style="top:818px;--d:1.15">+91 93328 79532</p>
+  <p class="contact a up" style="top:950px;--d:1.35"><b>Call or WhatsApp</b><br>enquiry@reefsentinel.com<br>www.reefsentinel.com</p>
+  <div class="pill keep a pop" style="top:1168px;--d:1.9;--dur:.45"><svg class="lu" width="34" height="34" viewBox="0 0 24 24" style="stroke-width:2.4"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Price locked for 3 years · join by 31 March 2027</div>
+  <p class="legal a fade" style="top:1290px;--d:2.3;--dur:.7">Reef Sentinel is a product of Sentinel AI Private Limited,<br>a DPIIT-recognised startup.</p>
+  <div class="waves a fade" style="top:1420px;height:330px;--d:.6;--dur:1" data-waves></div>
+</section>
+
+</div>
+
+<script>
+/* Lucide-style line icons (24x24, stroke 2), the icon set the pamphlet uses. */
+const IC = {
+  globe:'<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>',
+  users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  door:'<path d="M13 4h3a2 2 0 0 1 2 2v14"/><path d="M2 20h3"/><path d="M13 20h9"/><path d="M10 12v.01"/><path d="M13 4.56v16.16a1 1 0 0 1-1.24.97L5 20V5.56a2 2 0 0 1 1.52-1.94l4-1A2 2 0 0 1 13 4.56Z"/>',
+  phone:'<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  pin:'<path d="M20 10c0 4.99-5.54 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.54 20.19 4 14.99 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',
+  refresh:'<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>',
+  key:'<circle cx="7.5" cy="15.5" r="4"/><path d="M10.4 12.6 20 3"/><path d="m16.5 6.5 3 3"/><path d="m14 9 2.5 2.5"/>',
+  file:'<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>'
+};
+document.querySelectorAll('[data-ic]').forEach(el=>{
+  const s=el.dataset.sz||40, w=el.dataset.sw||2;
+  el.insertAdjacentHTML('afterbegin',`<svg class="lu" width="${s}" height="${s}" viewBox="0 0 24 24" style="stroke-width:${w}">${IC[el.dataset.ic]}</svg>`);
+});
+
+/* The pamphlet's wave motif: three drifting sine lines. */
+function wave(y,amp,phase){let d='';for(let x=-10;x<=1810;x+=6){d+=(d?'L':'M')+x+' '+(y+amp*Math.sin((x/360)*2*Math.PI+phase)).toFixed(1);}return d;}
+document.querySelectorAll('[data-waves]').forEach(el=>{
+  el.innerHTML=`<svg viewBox="0 0 1800 330" height="330"><path class="w1" d="${wave(70,34,0)}"/><path class="w2" d="${wave(165,34,2.1)}"/><path class="w3" d="${wave(260,34,4.2)}"/></svg>`;
+});
+
+const BEAT=2/3, BEATS=34, DURATION=BEATS*BEAT, scenes=[...document.querySelectorAll('.scene')];
+let anims=[];
+function seek(t){
+  const ms=t*1000, b=t/BEAT;
+  for(const a of anims) a.currentTime=ms;
+  for(const s of scenes) s.style.visibility=(b>=+s.dataset.s-1e-6&&b<+s.dataset.e)?'visible':'hidden';
+}
+window.seek=seek;
+document.fonts.ready.then(()=>Promise.all([...document.images].map(i=>i.decode().catch(()=>{})))).then(()=>{
+  anims=document.getAnimations(); anims.forEach(a=>a.pause());
+  const q=new URLSearchParams(location.search), stage=document.getElementById('stage');
+  if(q.has('capture')){seek(0);window.__ready=true;return;}
+  const fit=()=>{const k=Math.min(innerWidth/1080,innerHeight/1920);stage.style.transform=`translate(${(innerWidth-1080*k)/2}px,0) scale(${k})`;};
+  fit();addEventListener('resize',fit);
+  if(q.has('t')){seek(parseFloat(q.get('t')));window.__ready=true;return;}
+  const t0=performance.now();(function loop(){seek(((performance.now()-t0)/1000)%(DURATION+1));requestAnimationFrame(loop);})();
+  window.__ready=true;
+});
+</script>
+</body>
+</html>
