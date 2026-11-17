@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Reef Sentinel brag (site)</title>
+<!--
+  /brag-slim composition from www.reefsentinel.com: 1080x1920, 30 fps, 34 beats at 90 BPM
+  (22.667 s, 680 frames). Every animation is a paused CSS animation; window.seek(t) sets them
+  all to time t, so each frame is a pure function of time.
+  Timing is in BEATS: a scene sets --s (start beat), a child sets --d (beats after it).
+  --dur stays in seconds. Open in a browser to preview; add ?t=7.5 to freeze.
+  Product screens are the site's own screenshots with names swapped for placeholders
+  (see placeholders.py). Read zone: y 250-1536, x 100-940.
+-->
+<style>
+@font-face{font-family:"Outfit";src:url("assets/outfit-latin-wght-normal.woff2") format("woff2");font-weight:100 900;font-display:block}
+@property --d{syntax:"<number>";inherits:false;initial-value:0}
+@property --dur{syntax:"<number>";inherits:false;initial-value:.6}
+@property --ease{syntax:"*";inherits:false}
+:root{
+  --lav:#d7d0f4;--ink:#101110;--purple:#ab87ed;--indigo:#3d3776;--body:#3f3657;
+  --card:#f6f4fb;--lav2:#e8e2f6;--line:#cfc6e6;--line2:#dfd9ee;
+  --beat:.6666667s;
+  --out:cubic-bezier(.16,1,.3,1);--spring:cubic-bezier(.34,1.56,.64,1);--inout:cubic-bezier(.65,0,.35,1)
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#1b1a1f;overflow:hidden}
+#stage{position:absolute;left:0;top:0;width:1080px;height:1920px;overflow:hidden;background:var(--ink);
+  font-family:"Outfit",sans-serif;color:var(--ink);transform-origin:0 0;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+.scene{position:absolute;inset:0;overflow:hidden;visibility:hidden}
+.scene>*{position:absolute}
+.bg{inset:0}
+.lavbg{background:var(--lav)}.whitebg{background:#fff}.inkbg{background:var(--ink)}
+.edge{position:absolute;left:0;top:-119px;width:1080px;height:120px;display:block}
+
+/* ---------- animation plumbing ---------- */
+.a{animation-duration:calc(var(--dur)*1s);animation-delay:calc((var(--s) + var(--d))*var(--beat));animation-fill-mode:both;
+  animation-timing-function:var(--ease,var(--out));animation-play-state:paused}
+.up{animation-name:up}.fade{animation-name:fade}.fadeOut{animation-name:fadeOut}.outUp{animation-name:outUp}
+.pop{animation-name:pop;--ease:var(--spring)}.wipeUp{animation-name:wipeUp}.revealR{animation-name:revealR}
+.growX{animation-name:growX}.growY{animation-name:growY;transform-origin:50% 0}.rise{animation-name:rise}
+@keyframes up{from{opacity:0;transform:translateY(64px)}to{opacity:1;transform:none}}
+@keyframes rise{from{transform:translateY(135%)}to{transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes fadeOut{from{opacity:1}to{opacity:0}}
+@keyframes outUp{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-64px)}}
+@keyframes pop{from{opacity:0;transform:scale(.45)}35%{opacity:1}to{opacity:1;transform:scale(1)}}
+@keyframes wipeUp{from{transform:translateY(2060px)}to{transform:none}}
+@keyframes revealR{from{clip-path:inset(-10% 100% -10% 0)}to{clip-path:inset(-10% 0 -10% 0)}}
+@keyframes growX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes growY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(-360px)}}
+
+/* ---------- shared pieces (column x 100-940) ---------- */
+.toplogo{left:100px;top:250px;width:280px;height:auto}
+.eyebrow{left:100px;display:flex;align-items:center;gap:20px;font-weight:700;font-size:28px;letter-spacing:.2em;color:var(--indigo);white-space:nowrap}
+.eyebrow i{width:58px;height:5px;border-radius:3px;background:var(--purple);display:block}
+.h1{left:100px;right:140px;margin:0;font-weight:700;letter-spacing:-.02em;line-height:1.03}
+.white{color:#fff}
+.line{display:block;overflow:hidden;padding-bottom:.14em;margin-bottom:-.14em}
+.line>span{display:block}
+.cap{left:100px;right:140px;margin:0;font-size:37px;line-height:1.3;color:var(--body);font-weight:400}
+svg.lu{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block}
+.pill{display:inline-flex;align-items:center;gap:16px;border-radius:999px;font-weight:600;white-space:nowrap}
+.dot{flex:none;width:22px;height:22px;border-radius:50%;background:var(--purple);animation:pulse .6666667s ease-in-out infinite alternate paused}
+@keyframes pulse{from{box-shadow:0 0 0 5px rgba(171,135,237,.34)}to{box-shadow:0 0 0 11px rgba(171,135,237,.16)}}
+.toast{left:100px;background:var(--ink);color:#fff;font-size:33px;padding:20px 34px 20px 26px;box-shadow:0 16px 36px rgba(16,17,16,.25)}
+.toast b{font-weight:700}
+.waves{left:0;width:1080px;overflow:hidden}
+.waves svg{display:block;width:1800px}
+.waves path{fill:none;stroke:var(--purple);stroke-width:5}
+.w1{animation:drift 7s linear infinite paused}
+.w2{animation:drift 11s linear infinite paused;opacity:.5}
+.w3{animation:drift 16s linear infinite paused;opacity:.28}
+
+/* browser window around a real screenshot, as the site frames them */
+.win{left:100px;width:840px;background:#fff;border:3px solid var(--line2);border-radius:30px;overflow:hidden;box-shadow:0 30px 70px rgba(61,55,118,.16)}
+.win .bar{height:44px;background:#f4f2fa;border-bottom:2px solid var(--line2);display:flex;align-items:center;gap:10px;padding-left:22px}
+.win .bar i{width:13px;height:13px;border-radius:50%;background:#cfcbe0}
+.shot{position:relative;overflow:hidden}
+.shot img{position:absolute;left:0;top:0;display:block;transform-origin:0 0}
+.cam{animation-name:cam;--ease:var(--inout)}
+@keyframes cam{from{transform:translate(var(--x0),var(--y0)) scale(var(--k0))}to{transform:translate(var(--x1),var(--y1)) scale(var(--k1))}}
+.tap{width:110px;height:110px;border-radius:50%;border:6px solid var(--purple);animation-name:tap;z-index:5}
+@keyframes tap{from{opacity:0;transform:scale(.3)}25%{opacity:1}to{opacity:0;transform:scale(1.7)}}
+
+/* ---------- 1 hook ---------- */
+.node{top:640px;width:280px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:22px}
+.node .ic{width:116px;height:116px;border-radius:50%;background:var(--lav);color:var(--ink);display:grid;place-items:center}
+.node b{font-size:38px;line-height:1.12;font-weight:600;color:#fff}
+.conn{background:var(--purple)}
+.pool{left:0;right:0;top:1070px;display:flex;justify-content:center}
+.pool .pill{background:#fff;color:var(--ink);font-size:40px;padding:22px 40px 22px 30px;box-shadow:0 0 0 10px rgba(171,135,237,.22)}
+.pool svg{color:var(--indigo)}
+.folio{left:0;right:0;top:1262px;display:flex;justify-content:center;align-items:center;gap:14px;font-size:35px;color:var(--line)}
+.folio svg{color:var(--purple)}
+
+/* ---------- 4 channels ---------- */
+.chips{left:100px;width:840px;display:flex;flex-wrap:wrap;gap:16px}
+.chip{display:inline-flex;align-items:center;gap:14px;background:#fff;border-radius:999px;padding:12px 26px 12px 12px;font-size:31px;font-weight:600;white-space:nowrap;box-shadow:0 10px 24px rgba(61,55,118,.1)}
+.chip .ck{width:44px;height:44px;border-radius:50%;background:var(--lav2);color:var(--lav2);display:grid;place-items:center;animation-name:tick}
+@keyframes tick{from{background:var(--lav2);color:var(--lav2);transform:scale(1)}50%{transform:scale(1.25)}to{background:var(--purple);color:var(--ink);transform:scale(1)}}
+
+/* ---------- 6 call to action ---------- */
+#s6 .demo{left:100px;background:var(--lav);color:var(--ink);font-size:40px;font-weight:700;padding:26px 46px}
+.web{left:100px;right:140px;margin:0;font-size:48px;font-weight:600;color:#fff;letter-spacing:-.01em}
+.call{left:100px;right:140px;margin:0;font-size:38px;color:var(--lav)}
+.legal{left:100px;right:140px;margin:0;font-size:25px;line-height:1.4;color:#8f8b9c}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ===== 1 · beats 0-4 · hook: the site's "three ways to sell" diagram ===== -->
+<section class="scene" id="s1" style="--s:0" data-s="0" data-e="5.02">
+  <img class="toplogo" src="assets/logo-white.png" alt="">
+  <h1 class="h1 white" style="top:340px;font-size:88px">
+    <span class="line"><span class="a rise" style="--d:.1;--dur:.5">Three ways to sell.</span></span>
+    <span class="line"><span class="a rise" style="--d:2.0;--dur:.5;color:var(--lav)">One room inventory.</span></span>
+  </h1>
+
+  <div class="node a pop" style="left:100px;--d:.5;--dur:.45"><span class="ic" data-ic="tablet" data-sz="52"></span><b>Front desk<br>&amp; phone</b></div>
+  <div class="node a pop" style="left:380px;--d:1.0;--dur:.45"><span class="ic" data-ic="share" data-sz="52"></span><b>Connected<br>OTAs</b></div>
+  <div class="node a pop" style="left:660px;--d:1.5;--dur:.45"><span class="ic" data-ic="users" data-sz="52"></span><b>Travel<br>agents</b></div>
+
+  <div class="conn a growY" style="left:238px;top:930px;width:5px;height:44px;--d:2.0;--dur:.3"></div>
+  <div class="conn a growY" style="left:518px;top:930px;width:5px;height:44px;--d:2.0;--dur:.3"></div>
+  <div class="conn a growY" style="left:798px;top:930px;width:5px;height:44px;--d:2.0;--dur:.3"></div>
+  <div class="conn a growX" style="left:238px;top:970px;width:565px;height:5px;--d:2.2;--dur:.35;transform-origin:50% 50%"></div>
+  <div class="conn a growY" style="left:518px;top:972px;width:5px;height:84px;--d:2.4;--dur:.3"></div>
+  <div class="pool a pop" style="--d:2.5;--dur:.45"><span class="pill"><span data-ic="lock" data-sz="42" data-sw="2.4"></span>One inventory pool</span></div>
+  <div class="conn a growY" style="left:518px;top:1178px;width:5px;height:60px;--d:3.0;--dur:.25"></div>
+  <div class="folio a fade" style="--d:3.0;--dur:.35"><span data-ic="receipt" data-sz="40"></span>Folio, invoice and reports</div>
+</section>
+
+<!-- ===== 2 · beats 4-10 · reveal ===== -->
+<section class="scene" id="s2" style="--s:4" data-s="4" data-e="11.02">
+  <div class="bg lavbg a wipeUp" style="--dur:.65;--ease:var(--inout)"><svg class="edge" viewBox="0 0 1080 120"><path fill="#d7d0f4" d="M0 60C90 14 180 14 270 60S450 106 540 60S720 14 810 60S990 106 1080 60V121H0Z"/></svg></div>
+  <img class="a revealR" style="left:100px;top:330px;width:600px;--d:.6;--dur:.55" src="assets/logo-dark.png" alt="Reef Sentinel">
+  <h1 class="h1" style="top:540px;font-size:92px">
+    <span class="line"><span class="a rise" style="--d:.85;--dur:.6">Your hotel,</span></span>
+    <span class="line"><span class="a rise" style="--d:.97;--dur:.6">your OTAs and</span></span>
+    <span class="line"><span class="a rise" style="--d:1.09;--dur:.6">your travel agents.</span></span>
+    <span class="line"><span class="a rise" style="--d:1.35;--dur:.6;color:#6a52c9">One system.</span></span>
+  </h1>
+  <div class="waves a fade" style="top:1150px;height:330px;--d:.7;--dur:.9" data-waves></div>
+</section>
+
+<!-- ===== 3 · beats 10-14 · room chart ===== -->
+<section class="scene" id="s3" style="--s:10" data-s="10" data-e="15.02">
+  <div class="bg whitebg a wipeUp" style="--dur:.65;--ease:var(--inout)"><svg class="edge" viewBox="0 0 1080 120"><path fill="#fff" d="M0 60C90 14 180 14 270 60S450 106 540 60S720 14 810 60S990 106 1080 60V121H0Z"/></svg></div>
+  <img class="toplogo a fade" style="--d:.6;--dur:.4" src="assets/logo-dark.png" alt="">
+  <div class="eyebrow a up" style="top:362px;--d:.5"><i></i>FRONT OFFICE</div>
+  <h1 class="h1 a up" style="top:410px;font-size:90px;--d:.6">See every room,<br>every night.</h1>
+  <div class="win a up" style="top:650px;--d:.8">
+    <div class="bar"><i></i><i></i><i></i></div>
+    <div class="shot" style="height:714px">
+      <img class="a cam" style="width:1090px;--x0:0px;--y0:0px;--k0:1.1;--x1:-359px;--y1:0px;--k1:1.1;--d:1.1;--dur:2.1" src="screens/crop-roomchart.png" alt="Room chart">
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4 · beats 14-20 · channels ===== -->
+<section class="scene" id="s4" style="--s:14" data-s="14" data-e="21.02">
+  <div class="bg lavbg a wipeUp" style="--dur:.65;--ease:var(--inout)"><svg class="edge" viewBox="0 0 1080 120"><path fill="#d7d0f4" d="M0 60C90 14 180 14 270 60S450 106 540 60S720 14 810 60S990 106 1080 60V121H0Z"/></svg></div>
+  <img class="toplogo a fade" style="--d:.6;--dur:.4" src="assets/logo-dark.png" alt="">
+  <div class="eyebrow a up" style="top:362px;--d:.5"><i></i>CHANNEL CONNECTIVITY</div>
+  <h1 class="h1 a up" style="top:410px;font-size:84px;--d:.6">Change it once.<br>Every connected<br>channel follows.</h1>
+  <div class="win a up" style="top:716px;--d:.8">
+    <div class="bar"><i></i><i></i><i></i></div>
+    <div class="shot" style="height:509px">
+      <img style="width:840px" src="screens/crop-avail-pending.png" alt="Availability grid with 6 queued changes">
+      <img class="a fade" style="width:840px;--d:2.2;--dur:.25" src="screens/crop-avail-saved.png" alt="Availability grid after saving">
+    </div>
+  </div>
+  <div class="tap a" style="left:787px;top:746px;--d:1.95;--dur:.55;--ease:ease-out"></div>
+  <p class="cap a up" style="top:1306px;color:var(--indigo);font-size:33px;font-weight:600;--d:2.6">Pushed to your connected OTAs within seconds</p>
+  <div class="chips" style="top:1366px">
+    <span class="chip a pop" style="--d:2.85;--dur:.4"><span class="ck a" style="--d:3.0;--dur:.3" data-ic="check" data-sz="26" data-sw="3.2"></span>Booking.com</span>
+    <span class="chip a pop" style="--d:3.0;--dur:.4"><span class="ck a" style="--d:3.25;--dur:.3" data-ic="check" data-sz="26" data-sw="3.2"></span>MakeMyTrip / Goibibo</span>
+    <span class="chip a pop" style="--d:3.15;--dur:.4"><span class="ck a" style="--d:3.5;--dur:.3" data-ic="check" data-sz="26" data-sw="3.2"></span>Agoda</span>
+    <span class="chip a pop" style="--d:3.3;--dur:.4"><span class="ck a" style="--d:3.75;--dur:.3" data-ic="check" data-sz="26" data-sw="3.2"></span>Airbnb</span>
+    <span class="chip a pop" style="--d:3.45;--dur:.4"><span class="ck a" style="--d:4.0;--dur:.3" data-ic="check" data-sz="26" data-sw="3.2"></span>Expedia</span>
+    <span class="chip a pop" style="--d:3.6;--dur:.4"><span class="ck a" style="--d:4.25;--dur:.3" data-ic="check" data-sz="26" data-sw="3.2"></span>Yatra</span>
+  </div>
+</section>
+
+<!-- ===== 5 · beats 20-28 · check-in, then folio to GST invoice ===== -->
+<section class="scene" id="s5" style="--s:20" data-s="20" data-e="29.02">
+  <div class="bg whitebg a wipeUp" style="--dur:.65;--ease:var(--inout)"><svg class="edge" viewBox="0 0 1080 120"><path fill="#fff" d="M0 60C90 14 180 14 270 60S450 106 540 60S720 14 810 60S990 106 1080 60V121H0Z"/></svg></div>
+  <img class="toplogo a fade" style="--d:.6;--dur:.4" src="assets/logo-dark.png" alt="">
+  <div class="eyebrow a up" style="top:362px;--d:.5"><i></i>FRONT DESK</div>
+
+  <div class="a fadeOut" style="left:0;right:0;top:0;height:1920px;--d:3.62;--dur:.25;--ease:ease-in">
+    <h1 class="h1 a up" style="position:absolute;top:410px;font-size:90px;--d:.6">Check in to<br>a real room.</h1>
+    <div class="win a up" style="position:absolute;top:660px;--d:.8">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="shot" style="height:576px"><img style="width:840px" src="screens/crop-checkin.png" alt="Check-in dialog"></div>
+    </div>
+    <div class="tap a" style="position:absolute;left:274px;top:1137px;--d:1.95;--dur:.55;--ease:ease-out"></div>
+    <div class="pill toast a pop" style="position:absolute;top:1340px;--d:2.25;--dur:.45"><span class="dot"></span><span><b>Checked in</b> · Room S-201</span></div>
+  </div>
+
+  <h1 class="h1" style="top:410px;font-size:90px">
+    <span class="line"><span class="a rise" style="--d:4.0;--dur:.5">Folio to</span></span>
+    <span class="line"><span class="a rise" style="--d:4.12;--dur:.5">GST invoice.</span></span>
+  </h1>
+  <div class="win a up" style="top:660px;--d:4.2">
+    <div class="bar"><i></i><i></i><i></i></div>
+    <div class="shot" style="height:384px"><img class="a cam" style="width:856px;--x0:0px;--y0:0px;--k0:.9813;--x1:-144px;--y1:-66px;--k1:1.15;--d:4.75;--dur:.6" src="screens/folio.png" alt="Guest folio"></div>
+  </div>
+  <p class="cap a up" style="top:1130px;--d:4.6">Room, POS and manual charges,<br>payments and advances.</p>
+  <div class="tap a" style="left:796px;top:1002px;--d:5.45;--dur:.55;--ease:ease-out"></div>
+  <div class="pill toast a pop" style="top:1290px;--d:5.75;--dur:.45"><span class="dot"></span><span><b>GST invoice</b> ready</span></div>
+</section>
+
+<!-- ===== 6 · beats 28-34 · call to action ===== -->
+<section class="scene" id="s6" style="--s:28" data-s="28" data-e="99">
+  <div class="bg inkbg a wipeUp" style="--dur:.65;--ease:var(--inout)"><svg class="edge" viewBox="0 0 1080 120"><path fill="#101110" d="M0 60C90 14 180 14 270 60S450 106 540 60S720 14 810 60S990 106 1080 60V121H0Z"/></svg></div>
+  <img class="toplogo a fade" style="--d:.5;--dur:.4" src="assets/logo-white.png" alt="">
+  <div class="eyebrow a up" style="top:362px;color:var(--purple);--d:.5">DEMO</div>
+  <h1 class="h1 white" style="top:414px;font-size:90px">
+    <span class="line"><span class="a rise" style="--d:.6;--dur:.55">See Reef Sentinel</span></span>
+    <span class="line"><span class="a rise" style="--d:.72;--dur:.55;color:var(--lav)">with your own</span></span>
+    <span class="line"><span class="a rise" style="--d:.84;--dur:.55;color:var(--lav)">property in mind.</span></span>
+  </h1>
+  <div class="pill demo a pop" style="top:760px;--d:1.5;--dur:.45">Request a demo</div>
+  <p class="web a up" style="top:900px;--d:1.75">www.reefsentinel.com</p>
+  <p class="call a up" style="top:972px;--d:1.95">Call or WhatsApp +91 93328 79532</p>
+  <p class="legal a fade" style="top:1080px;--d:2.4;--dur:.6">Reef Sentinel is a product of Sentinel AI Private Limited,<br>a DPIIT-recognised startup.</p>
+  <div class="waves a fade" style="top:1300px;height:330px;--d:1.2;--dur:1" data-waves></div>
+</section>
+
+</div>
+
+<script>
+/* Lucide line icons (24x24), the icon set both the site and the pamphlet use. */
+const IC = {
+  tablet:'<rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><line x1="12" x2="12.01" y1="18" y2="18"/>',
+  share:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>',
+  users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  lock:'<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+  receipt:'<path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>'
+};
+document.querySelectorAll('[data-ic]').forEach(el=>{
+  const s=el.dataset.sz||40, w=el.dataset.sw||2;
+  el.insertAdjacentHTML('afterbegin',`<svg class="lu" width="${s}" height="${s}" viewBox="0 0 24 24" style="stroke-width:${w}">${IC[el.dataset.ic]}</svg>`);
+});
+
+/* The pamphlet's wave motif: three drifting sine lines. */
+function wave(y,amp,phase){let d='';for(let x=-10;x<=1810;x+=6){d+=(d?'L':'M')+x+' '+(y+amp*Math.sin((x/360)*2*Math.PI+phase)).toFixed(1);}return d;}
+document.querySelectorAll('[data-waves]').forEach(el=>{
+  el.innerHTML=`<svg viewBox="0 0 1800 330" height="330"><path class="w1" d="${wave(70,34,0)}"/><path class="w2" d="${wave(165,34,2.1)}"/><path class="w3" d="${wave(260,34,4.2)}"/></svg>`;
+});
+
+const BEAT=2/3, BEATS=34, DURATION=BEATS*BEAT, scenes=[...document.querySelectorAll('.scene')];
+let anims=[];
+function seek(t){
+  const ms=t*1000, b=t/BEAT;
+  for(const a of anims) a.currentTime=ms;
+  for(const s of scenes) s.style.visibility=(b>=+s.dataset.s-1e-6&&b<+s.dataset.e)?'visible':'hidden';
+}
+window.seek=seek;
+document.fonts.ready.then(()=>Promise.all([...document.images].map(i=>i.decode().catch(()=>{})))).then(()=>{
+  anims=document.getAnimations(); anims.forEach(a=>a.pause());
+  const q=new URLSearchParams(location.search), stage=document.getElementById('stage');
+  if(q.has('capture')){seek(0);window.__ready=true;return;}
+  const fit=()=>{const k=Math.min(innerWidth/1080,innerHeight/1920);stage.style.transform=`translate(${(innerWidth-1080*k)/2}px,0) scale(${k})`;};
+  fit();addEventListener('resize',fit);
+  if(q.has('t')){seek(parseFloat(q.get('t')));window.__ready=true;return;}
+  const t0=performance.now();(function loop(){seek(((performance.now()-t0)/1000)%(DURATION+1));requestAnimationFrame(loop);})();
+  window.__ready=true;
+});
+</script>
+</body>
+</html>
