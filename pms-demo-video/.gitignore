@@ -1,0 +1,9 @@
+node_modules/
+remotion/out/
+*_frames/
+*_frames.txt
+*_error.png
+# regenerable: music (make_music.py) and the TTS working copies (tts.py)
+assets/bg-music.wav
+remotion/public/bg-music.wav
+assets/voice/*.wav

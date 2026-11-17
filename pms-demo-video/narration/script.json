@@ -1,0 +1,19 @@
+{
+  "voice": "hf_alpha",
+  "lang": "en-gb",
+  "speed": 1.0,
+  "tagline": "Every stay, perfectly managed.",
+  "scenes": [
+    {"id": "01-intro",     "type": "card",   "lines": ["Meet Reef Sentinel. One platform to run your entire hotel."]},
+    {"id": "02-dashboard", "type": "screen", "lines": ["Your day at a glance. Arrivals, available rooms, bookings, and month-to-date revenue, all updated live."]},
+    {"id": "03-roomchart", "type": "screen", "lines": ["The room chart puts every reservation on a single timeline.", "Confirmed stays, in-house guests, and free rooms, visible instantly."]},
+    {"id": "04-booking",   "type": "screen", "lines": ["Taking a direct booking takes seconds. Pick the dates, and check availability.", "Choose a room and rate plan.", "Add the guest's details, and the price, with tax, is calculated instantly.", "Confirm, and the booking is done."]},
+    {"id": "05-checkin",   "type": "screen", "lines": ["When guests arrive, the front desk sees today's arrivals.", "Assign a room, and check them in with a single click."]},
+    {"id": "06-pos-setup", "type": "screen", "lines": ["Point of sale is built in. Add outlets like a restaurant, a bar, or a spa.", "Each one gets its own menu, taxes, and service charge."]},
+    {"id": "07-pos-order", "type": "screen", "lines": ["Staff take orders right from the menu.", "Send the order to the kitchen.", "Then charge the bill straight to the guest's room."]},
+    {"id": "08-folio",     "type": "screen", "lines": ["Every charge, from the room to the restaurant and the bar, lands on one guest folio, ready for a smooth checkout."]},
+    {"id": "09-users",     "type": "screen", "lines": ["Add your team in seconds.", "And give each person exactly the access they need, down to individual outlets."]},
+    {"id": "10-reports",   "type": "screen", "lines": ["And real-time reports on revenue and occupancy keep management in the loop."]},
+    {"id": "11-outro",     "type": "card",   "lines": ["Reef Sentinel. Every stay, perfectly managed."]}
+  ]
+}

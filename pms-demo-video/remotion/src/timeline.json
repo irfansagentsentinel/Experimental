@@ -1,0 +1,240 @@
+{
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "xfade": 15,
+  "durationInFrames": 4908,
+  "tagline": "Every stay, perfectly managed.",
+  "scenes": [
+    {
+      "id": "01-intro",
+      "type": "card",
+      "label": "",
+      "clip": null,
+      "from": 0,
+      "durationInFrames": 193,
+      "lines": [
+        {
+          "text": "Meet Reef Sentinel. One platform to run your entire hotel.",
+          "audio": "voice/01-intro_0.wav",
+          "from": 24,
+          "durationInFrames": 121
+        }
+      ]
+    },
+    {
+      "id": "02-dashboard",
+      "type": "screen",
+      "label": "Dashboard",
+      "clip": "clips/02-dashboard.mp4",
+      "from": 178,
+      "durationInFrames": 373,
+      "lines": [
+        {
+          "text": "Your day at a glance. Arrivals, available rooms, bookings, and month-to-date revenue, all updated live.",
+          "audio": "voice/02-dashboard_0.wav",
+          "from": 18,
+          "durationInFrames": 208
+        }
+      ]
+    },
+    {
+      "id": "03-roomchart",
+      "type": "screen",
+      "label": "Room Chart",
+      "clip": "clips/03-roomchart.mp4",
+      "from": 536,
+      "durationInFrames": 317,
+      "lines": [
+        {
+          "text": "The room chart puts every reservation on a single timeline.",
+          "audio": "voice/03-roomchart_0.wav",
+          "from": 18,
+          "durationInFrames": 115
+        },
+        {
+          "text": "Confirmed stays, in-house guests, and free rooms, visible instantly.",
+          "audio": "voice/03-roomchart_1.wav",
+          "from": 140,
+          "durationInFrames": 136
+        }
+      ]
+    },
+    {
+      "id": "04-booking",
+      "type": "screen",
+      "label": "Direct Booking",
+      "clip": "clips/04-booking.mp4",
+      "from": 838,
+      "durationInFrames": 962,
+      "lines": [
+        {
+          "text": "Taking a direct booking takes seconds. Pick the dates, and check availability.",
+          "audio": "voice/04-booking_0.wav",
+          "from": 15,
+          "durationInFrames": 148
+        },
+        {
+          "text": "Choose a room and rate plan.",
+          "audio": "voice/04-booking_1.wav",
+          "from": 270,
+          "durationInFrames": 59
+        },
+        {
+          "text": "Add the guest's details, and the price, with tax, is calculated instantly.",
+          "audio": "voice/04-booking_2.wav",
+          "from": 422,
+          "durationInFrames": 142
+        },
+        {
+          "text": "Confirm, and the booking is done.",
+          "audio": "voice/04-booking_3.wav",
+          "from": 733,
+          "durationInFrames": 63
+        }
+      ]
+    },
+    {
+      "id": "05-checkin",
+      "type": "screen",
+      "label": "Front Desk · Check-in",
+      "clip": "clips/05-checkin.mp4",
+      "from": 1785,
+      "durationInFrames": 293,
+      "lines": [
+        {
+          "text": "When guests arrive, the front desk sees today's arrivals.",
+          "audio": "voice/05-checkin_0.wav",
+          "from": 15,
+          "durationInFrames": 108
+        },
+        {
+          "text": "Assign a room, and check them in with a single click.",
+          "audio": "voice/05-checkin_1.wav",
+          "from": 148,
+          "durationInFrames": 92
+        }
+      ]
+    },
+    {
+      "id": "06-pos-setup",
+      "type": "screen",
+      "label": "Point of Sale · Outlets",
+      "clip": "clips/06-pos-setup.mp4",
+      "from": 2063,
+      "durationInFrames": 591,
+      "lines": [
+        {
+          "text": "Point of sale is built in. Add outlets like a restaurant, a bar, or a spa.",
+          "audio": "voice/06-pos-setup_0.wav",
+          "from": 15,
+          "durationInFrames": 147
+        },
+        {
+          "text": "Each one gets its own menu, taxes, and service charge.",
+          "audio": "voice/06-pos-setup_1.wav",
+          "from": 254,
+          "durationInFrames": 114
+        }
+      ]
+    },
+    {
+      "id": "07-pos-order",
+      "type": "screen",
+      "label": "Point of Sale · Billing",
+      "clip": "clips/07-pos-order.mp4",
+      "from": 2639,
+      "durationInFrames": 548,
+      "lines": [
+        {
+          "text": "Staff take orders right from the menu.",
+          "audio": "voice/07-pos-order_0.wav",
+          "from": 15,
+          "durationInFrames": 75
+        },
+        {
+          "text": "Send the order to the kitchen.",
+          "audio": "voice/07-pos-order_1.wav",
+          "from": 169,
+          "durationInFrames": 57
+        },
+        {
+          "text": "Then charge the bill straight to the guest's room.",
+          "audio": "voice/07-pos-order_2.wav",
+          "from": 236,
+          "durationInFrames": 80
+        }
+      ]
+    },
+    {
+      "id": "08-folio",
+      "type": "screen",
+      "label": "Guest Folio",
+      "clip": "clips/08-folio.mp4",
+      "from": 3172,
+      "durationInFrames": 437,
+      "lines": [
+        {
+          "text": "Every charge, from the room to the restaurant and the bar, lands on one guest folio, ready for a smooth checkout.",
+          "audio": "voice/08-folio_0.wav",
+          "from": 15,
+          "durationInFrames": 198
+        }
+      ]
+    },
+    {
+      "id": "09-users",
+      "type": "screen",
+      "label": "Users & Permissions",
+      "clip": "clips/09-users.mp4",
+      "from": 3594,
+      "durationInFrames": 779,
+      "lines": [
+        {
+          "text": "Add your team in seconds.",
+          "audio": "voice/09-users_0.wav",
+          "from": 15,
+          "durationInFrames": 54
+        },
+        {
+          "text": "And give each person exactly the access they need, down to individual outlets.",
+          "audio": "voice/09-users_1.wav",
+          "from": 395,
+          "durationInFrames": 160
+        }
+      ]
+    },
+    {
+      "id": "10-reports",
+      "type": "screen",
+      "label": "Reports",
+      "clip": "clips/10-reports.mp4",
+      "from": 4358,
+      "durationInFrames": 350,
+      "lines": [
+        {
+          "text": "And real-time reports on revenue and occupancy keep management in the loop.",
+          "audio": "voice/10-reports_0.wav",
+          "from": 15,
+          "durationInFrames": 153
+        }
+      ]
+    },
+    {
+      "id": "11-outro",
+      "type": "card",
+      "label": "",
+      "clip": null,
+      "from": 4693,
+      "durationInFrames": 215,
+      "lines": [
+        {
+          "text": "Reef Sentinel. Every stay, perfectly managed.",
+          "audio": "voice/11-outro_0.wav",
+          "from": 27,
+          "durationInFrames": 92
+        }
+      ]
+    }
+  ]
+}
