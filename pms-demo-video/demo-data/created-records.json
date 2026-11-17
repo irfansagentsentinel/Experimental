@@ -1,0 +1,211 @@
+{
+  "outlets": [
+    "9",
+    "10"
+  ],
+  "categories": [
+    "31",
+    "32",
+    "33",
+    "34",
+    "35",
+    "36",
+    "37"
+  ],
+  "products": [
+    "56",
+    "57",
+    "58",
+    "59",
+    "60",
+    "61",
+    "62",
+    "63",
+    "64",
+    "65",
+    "66",
+    "67",
+    "68",
+    "69",
+    "70",
+    "71",
+    "72",
+    "73",
+    "74",
+    "75"
+  ],
+  "users": [
+    "114",
+    "115",
+    "116",
+    "117",
+    "118"
+  ],
+  "bookings": [
+    {
+      "id": "15741",
+      "code": "T9M4H3",
+      "guest": "Aarav Mehta",
+      "ci": "2026-11-17",
+      "co": "2026-11-19",
+      "room_type_id": 12
+    },
+    {
+      "id": "15742",
+      "code": "RJTBHK",
+      "guest": "Ishaan Kapoor",
+      "ci": "2026-11-17",
+      "co": "2026-11-20",
+      "room_type_id": 13
+    },
+    {
+      "id": "15743",
+      "code": "6UNTKU",
+      "guest": "Emily Clarke",
+      "ci": "2026-11-17",
+      "co": "2026-11-18",
+      "room_type_id": 12
+    },
+    {
+      "id": "15744",
+      "code": "JTY4PY",
+      "guest": "Rohan & Kavya Iyer",
+      "ci": "2026-11-17",
+      "co": "2026-11-21",
+      "room_type_id": 12
+    },
+    {
+      "id": "15745",
+      "code": "XZ5GB2",
+      "guest": "Daniel Müller",
+      "ci": "2026-11-18",
+      "co": "2026-11-21",
+      "room_type_id": 13
+    },
+    {
+      "id": "15746",
+      "code": "XET2F8",
+      "guest": "Fatima Al Mansoori",
+      "ci": "2026-11-19",
+      "co": "2026-11-23",
+      "room_type_id": 13
+    },
+    {
+      "id": "15747",
+      "code": "MTSPGD",
+      "guest": "Arjun Reddy",
+      "ci": "2026-11-20",
+      "co": "2026-11-22",
+      "room_type_id": 12
+    },
+    {
+      "id": "15748",
+      "code": "TZAM5A",
+      "guest": "Neha Gupta",
+      "ci": "2026-11-21",
+      "co": "2026-11-23",
+      "room_type_id": 12
+    },
+    {
+      "id": "15749",
+      "code": "X3ZK9C",
+      "guest": "Kenji Tanaka",
+      "ci": "2026-11-22",
+      "co": "2026-11-25",
+      "room_type_id": 12
+    },
+    {
+      "id": "15750",
+      "code": "JKUJKA",
+      "guest": "Sophia Martin",
+      "ci": "2026-11-25",
+      "co": "2026-11-28",
+      "room_type_id": 13
+    },
+    {
+      "id": "15751",
+      "code": "PZAPRB",
+      "guest": "Vivek Malhotra",
+      "ci": "2026-11-28",
+      "co": "2026-11-30",
+      "room_type_id": 12
+    },
+    {
+      "id": "15752",
+      "code": "35A537",
+      "guest": "Meera Joshi",
+      "ci": "2026-12-12",
+      "co": "2026-12-15",
+      "room_type_id": 12
+    },
+    {
+      "id": "15753",
+      "code": "UWPNEH",
+      "guest": "James Wilson",
+      "ci": "2026-12-20",
+      "co": "2026-12-24",
+      "room_type_id": 13
+    },
+    {
+      "id": "15754",
+      "code": "FHCYQK",
+      "guest": "Olivia Brown",
+      "ci": "2026-12-02",
+      "co": "2026-12-06",
+      "room_type_id": 13
+    },
+    {
+      "id": "15755",
+      "code": "8BNE3H",
+      "guest": "Aditya Sharma",
+      "ci": "2026-12-05",
+      "co": "2026-12-07",
+      "room_type_id": 12
+    },
+    {
+      "id": "15756",
+      "code": "V6XVDK",
+      "guest": "Karan Bhatia",
+      "ci": "2026-11-26",
+      "co": "2026-11-28",
+      "room_type_id": 12
+    }
+  ],
+  "bills": [
+    "48",
+    "49",
+    "50",
+    "51",
+    "52",
+    "53",
+    "54",
+    "55"
+  ],
+  "checkins": [
+    {
+      "id": "15741",
+      "room": "104"
+    },
+    {
+      "id": "15742",
+      "room": "305"
+    },
+    {
+      "id": "15743",
+      "room": "105"
+    }
+  ],
+  "cancelled": [
+    "15756"
+  ],
+  "recording": {
+    "bookings": [
+      "H73VJG (Ananya Rao)",
+      "G3H75E (cancelled duplicate)"
+    ],
+    "checkin": "XZ5GB2 Daniel Müller",
+    "outlet": "11",
+    "user": "119",
+    "bill": "POSB609520071 → Ishaan Kapoor folio"
+  }
+}
